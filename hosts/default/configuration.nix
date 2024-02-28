@@ -1,19 +1,18 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-      ../../modules/nixos/main-user.nix
-    ];
-
-  main-user.enable = true;
-  main-user.userName = "cholli";
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.nixvim.nixosModules.nixvim
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -30,25 +29,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  #bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    settings = {
-      General = {
-        Name = "Hello";
-        ControllerMode = "dual";
-        FastConnectable = "true";
-        Experimental = "true";
-      };
-      Policy = {
-        AutoEnable = "true";
-      };
-    };
-    powerOnBoot = true;
-  };
-
-  services.blueman.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -68,6 +48,7 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
+  # nvidia
   hardware.opengl = {
     enable = true;
     driSupport = true;
@@ -90,7 +71,6 @@
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -100,8 +80,10 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
   };
 
   # Enable CUPS to print documents.
@@ -124,16 +106,33 @@
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.cholli = {
+    isNormalUser = true;
+    home = "/home/cholli";
+    extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      discord
+      firefox
+      steam
+    ];
+  };
+
+  programs.zsh = {
+    enable = true;
+    promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+  };
+
+  # Set shell as well
+  users.users.cholli.shell = pkgs.zsh;
+  environment.shells = with pkgs; [zsh];
+
   home-manager = {
-    extraSpecialArgs = { inherit inputs;};
+    extraSpecialArgs = {inherit inputs;};
     users = {
-      "cholli" = import ./home.nix
-    }
-  }
+      "cholli" = import ./home.nix;
+    };
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -141,52 +140,129 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     neovim
-     lshw
-     git
-     neofetch
-     rustup
-     fish
-     bash
-     wget
-     alacritty
-     zellij
-     dunst
-     lazygit
-     fd
-     discord
-     firefox
-     steam
+    neovim
+    lshw
+    git
+    neofetch
+    rustup
+    rust-analyzer
+    zsh
+    zsh-powerlevel10k
+    bash
+    wget
+    dunst
+    lazygit
+    fd
+    tree
+    ripgrep
+    clang
+    alejandra
+    alacritty
   ];
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["CodeNewRoman"];})
+  ];
+
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
+  programs.nixvim.enable = true;
+
+  programs.nixvim.plugins = {
+    telescope = {
+      enable = true;
+    };
+
+    treesitter = {
+      enable = true;
+    };
+
+    luasnip.enable = true;
+
+    lualine.enable = true;
+
+    lsp = {
+      enable = true;
+
+      servers = {
+        nixd.enable = true;
+      };
+    };
+
+    lsp-format = {
+      enable = true;
+      setup = {
+        nix = {
+        };
+      };
+    };
+
+    nvim-cmp = {
+      enable = true;
+      autoEnableSources = true;
+      sources = [
+        {name = "nvim_lsp";}
+        {name = "luasnip";}
+        {name = "path";}
+        {name = "buffer";}
+      ];
+    };
+
+    nvim-autopairs.enable = true;
+
+    rustaceanvim.enable = true;
+
+    rainbow-delimiters.enable = true;
+    nvim-colorizer.enable = true;
+
+    undotree.enable = true;
+
+    which-key.enable = true;
+
+    trouble.enable = true;
+
+    markdown-preview.enable = true;
+
+    copilot-lua = {
+      enable = true;
+      panel.enabled = false;
+      suggestion.enabled = false;
+    };
+    copilot-cmp.enable = true;
+  };
+
+  programs.nixvim = {
+    colorschemes.tokyonight.enable = true;
+
+    globals.mapleader = " ";
+
+    keymaps = [
+      {
+        action = "<cmd>Telescope live_grep<CR>";
+        key = "<leader>g";
+      }
+    ];
+
+    options = {
+      number = true;
+      relativenumber = true;
+
+      shiftwidth = 2;
+    };
+  };
 
   environment.variables.EDITOR = "nvim";
   environment.variables.SUDOEDITOR = "nvim";
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }
