@@ -5,30 +5,31 @@
   config,
   pkgs,
   inputs,
+  callPackage,
   lib,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./../../configuration.nix
     inputs.nixvim.nixosModules.nixvim
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  networking.hostName = "nixos"; # Define your hostname.
+  # Define your hostname.
+  networking.hostName = "CHDesktop";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  hardware.bluetooth = {
+    enable = true; # enables support for Bluetooth
+    powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  };
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  fileSystems."/var/lib/bluetooth" = {
+    device = "/persist/var/lib/bluetooth";
+    options = ["bind" "noauto" "x-systemd.automount"];
+    noCheck = true;
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -71,39 +72,21 @@
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
+  environment.pathsToLink = ["/libexec"];
+
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-
-  # Configure keymap in X11
   services.xserver = {
+    enable = true;
+
+    # Enable the KDE Plasma Desktop Environment.
+    displayManager.sddm.enable = true;
+    desktopManager.plasma5.enable = true;
+
+    # Configure keymap in X11
     xkb = {
       layout = "us";
       variant = "";
     };
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -115,12 +98,8 @@
       discord
       firefox
       steam
+      libsForQt5.bismuth
     ];
-  };
-
-  programs.zsh = {
-    enable = true;
-    promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
   };
 
   # Set shell as well
@@ -134,40 +113,19 @@
     };
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
-    lshw
-    git
-    neofetch
     rustup
     rust-analyzer
-    zsh
-    zsh-powerlevel10k
-    bash
-    wget
-    dunst
     lazygit
-    fd
-    tree
-    ripgrep
-    clang
-    alejandra
-    alacritty
   ];
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["CodeNewRoman"];})
-  ];
-
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
+  fonts = {
+    packages = with pkgs; [
+      (nerdfonts.override {fonts = ["CodeNewRoman"];})
+    ];
   };
 
   programs.steam = {
@@ -176,90 +134,7 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
-  programs.nixvim.enable = true;
 
-  programs.nixvim.plugins = {
-    telescope = {
-      enable = true;
-    };
-
-    treesitter = {
-      enable = true;
-    };
-
-    luasnip.enable = true;
-
-    lualine.enable = true;
-
-    lsp = {
-      enable = true;
-
-      servers = {
-        nixd.enable = true;
-      };
-    };
-
-    lsp-format = {
-      enable = true;
-      setup = {
-        nix = {
-        };
-      };
-    };
-
-    nvim-cmp = {
-      enable = true;
-      autoEnableSources = true;
-      sources = [
-        {name = "nvim_lsp";}
-        {name = "luasnip";}
-        {name = "path";}
-        {name = "buffer";}
-      ];
-    };
-
-    nvim-autopairs.enable = true;
-
-    rustaceanvim.enable = true;
-
-    rainbow-delimiters.enable = true;
-    nvim-colorizer.enable = true;
-
-    undotree.enable = true;
-
-    which-key.enable = true;
-
-    trouble.enable = true;
-
-    markdown-preview.enable = true;
-
-    copilot-lua = {
-      enable = true;
-      panel.enabled = false;
-      suggestion.enabled = false;
-    };
-    copilot-cmp.enable = true;
-  };
-
-  programs.nixvim = {
-    colorschemes.tokyonight.enable = true;
-
-    globals.mapleader = " ";
-
-    keymaps = [
-      {
-        action = "<cmd>Telescope live_grep<CR>";
-        key = "<leader>g";
-      }
-    ];
-
-    options = {
-      number = true;
-      relativenumber = true;
-
-      shiftwidth = 2;
-    };
-  };
 
   environment.variables.EDITOR = "nvim";
   environment.variables.SUDOEDITOR = "nvim";
