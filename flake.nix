@@ -15,9 +15,9 @@
 
     nixvim = {
       url = "github:nix-community/nixvim";
-      # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   outputs = {
@@ -34,7 +34,9 @@
       modules = [
         ./hosts/default/configuration.nix
         inputs.home-manager.nixosModules.default
-        {environment.systemPackages = [alejandra.defaultPackage.${system}];}
+        {
+	environment.systemPackages = [alejandra.defaultPackage.${system}];
+	}
       ];
     };
   };

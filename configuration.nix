@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./programs/nixvim.nix
+    inputs.pre-commit-hooks-nix.flakeModule
   ];
 
   # Bootloader.
@@ -41,20 +42,27 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    neovim
-    lshw
+    #essentials
     git
-    neofetch
+    neovim
+    kitty
     zsh
     zsh-powerlevel10k
     bash
     wget
+
+    # nice to have
+    neofetch
     fd
     tree
     ripgrep
     clang
+
+    # make sure our nix files always look good
     alejandra
-    kitty
+    pre-commit
+    
+    # mostly for pactl
     pulseaudio
   ];
 
@@ -62,6 +70,11 @@
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
+  };
+
+  perSystem.pre-commit = {
+    check.enable = true;
+    settings.settings.alejandra.check = true;
   };
 
   system.stateVersion = "23.11"; # Did you read the comment?

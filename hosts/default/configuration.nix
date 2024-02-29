@@ -119,7 +119,6 @@
   environment.systemPackages = with pkgs; [
     rustup
     rust-analyzer
-    lazygit
   ];
 
   fonts = {
@@ -133,8 +132,6 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
-
-
 
   environment.variables.EDITOR = "nvim";
   environment.variables.SUDOEDITOR = "nvim";
