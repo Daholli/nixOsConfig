@@ -7,7 +7,6 @@
 }: {
   imports = [
     ./programs/nixvim.nix
-    inputs.pre-commit-hooks-nix.flakeModule
   ];
 
   # Bootloader.
@@ -60,7 +59,6 @@
 
     # make sure our nix files always look good
     alejandra
-    pre-commit
     
     # mostly for pactl
     pulseaudio
@@ -70,11 +68,6 @@
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
-  };
-
-  perSystem.pre-commit = {
-    check.enable = true;
-    settings.settings.alejandra.check = true;
   };
 
   system.stateVersion = "23.11"; # Did you read the comment?
