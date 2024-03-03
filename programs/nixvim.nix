@@ -36,12 +36,23 @@
         key = "<esc>";
         options.silent = true;
       }
+      {
+	mode = "n";
+	action = "<cmd>Git add .<CR>";
+	key = "<leader>gaa";
+	options.desc = "Stage all changes";
+      }
+      {
+	mode = "n";
+	action = "<cmd>Git commit<CR>";
+	key = "<leader>gc";
+	options.desc = "Git Commit";
+      }
     ];
 
     options = {
       number = true;
       relativenumber = true;
-
       shiftwidth = 2;
     };
 
@@ -97,11 +108,11 @@
         };
         keymaps = {
           lspBuf = {
-            "<leader>K" = "hover";
-            "<leader>gD" = "references";
-            "<leader>gd" = "definition";
-            "<leader>gi" = "implementation";
-            "<leader>gt" = "type_definition";
+            "<leader>ch" = "hover";
+            "<leader>cD" = "references";
+            "<leader>cd" = "definition";
+            "<leader>ci" = "implementation";
+            "<leader>ct" = "type_definition";
           };
         };
       };
@@ -156,7 +167,16 @@
 
       undotree.enable = true;
 
-      which-key.enable = true;
+      which-key = {
+	enable = true;
+	registrations = {
+	  "<leader>ch" = "Code hover";
+	  "<leader>cD" = "Code references";
+	  "<leader>cd" = "Code definitions";
+	  "<leader>ci" = "Implementations";
+			"<leader>ct" = "Type definition";
+	};
+      };
 
       trouble.enable = true;
 
@@ -168,7 +188,9 @@
         suggestion.enabled = false;
       };
 
-      copilot-cmp.enable = true;
+      copilot-cmp = {
+      enable = true;
+      fixPairs = false;};
     };
   };
 }
