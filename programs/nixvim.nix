@@ -22,11 +22,13 @@
       {
         action = "<cmd>Ex<CR>";
         key = "<leader>e";
+	options.desc = "Open Explorer";
       }
       {
         mode = "n";
         action = "<cmd>w<CR>";
         key = "<C-s>";
+	options.desc = "Save";
       }
       {
         mode = "n";
@@ -64,9 +66,19 @@
         };
       };
 
-      harppon = {
+      harpoon = {
         enable = true;
-        keymaps.addFile = "<leader>a";
+	enableTelescope = true;
+        keymaps = {
+	addFile = "<leader>a";
+	toggleQuickMenu = "<leader>ha";
+	navFile = {
+            "1" = "<C-j>";
+            "2" = "<C-k>";
+            "3" = "<C-l>";
+            "4" = "<C-m>";
+	};
+	};
       };
 
       treesitter = {
@@ -136,6 +148,8 @@
       nvim-autopairs.enable = true;
 
       rustaceanvim.enable = true;
+
+      fugitive.enable = true;
 
       rainbow-delimiters.enable = true;
       nvim-colorizer.enable = true;
