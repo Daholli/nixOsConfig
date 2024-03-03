@@ -22,13 +22,13 @@
       {
         action = "<cmd>Ex<CR>";
         key = "<leader>e";
-	options.desc = "Open Explorer";
+        options.desc = "Open Explorer";
       }
       {
         mode = "n";
         action = "<cmd>w<CR>";
         key = "<C-s>";
-	options.desc = "Save";
+        options.desc = "Save";
       }
       {
         mode = "n";
@@ -37,30 +37,29 @@
         options.silent = true;
       }
       {
-	mode = "n";
-	action = "<cmd>Git add .<CR>";
-	key = "<leader>gaa";
-	options.desc = "Stage all changes";
+        mode = "n";
+        action = "<cmd>Git add .<CR>";
+        key = "<leader>gaa";
+        options.desc = "Stage all changes";
       }
       {
-	mode = "n";
-	action = "<cmd>Git commit<CR>";
-	key = "<leader>gc";
-	options.desc = "Git Commit";
+        mode = "n";
+        action = "<cmd>Git commit<CR>";
+        key = "<leader>gc";
+        options.desc = "Git Commit";
       }
       {
-	mode = "n";
-	action = "<cmd>UndotreeToggle<CR>";
-	key = "<leader>ut";
-	options.desc = "Toggle Undotree";
+        mode = "n";
+        action = "<cmd>UndotreeToggle<CR>";
+        key = "<leader>ut";
+        options.desc = "Toggle Undotree";
       }
       {
-	mode = "n";
-	action = "<cmd>UndotreeToggle<CR>";
-	key = "<leader>uf";
-	options.desc = "Focus Undotree";
+        mode = "n";
+        action = "<cmd>UndotreeToggle<CR>";
+        key = "<leader>uf";
+        options.desc = "Focus Undotree";
       }
-
     ];
 
     options = {
@@ -92,17 +91,17 @@
 
       harpoon = {
         enable = true;
-	enableTelescope = true;
+        enableTelescope = true;
         keymaps = {
-	addFile = "<leader>a";
-	toggleQuickMenu = "<leader>ha";
-	navFile = {
+          addFile = "<leader>a";
+          toggleQuickMenu = "<leader>ha";
+          navFile = {
             "1" = "<C-1>";
             "2" = "<C-2>";
             "3" = "<C-3>";
             "4" = "<C-4>";
-	};
-	};
+          };
+        };
       };
 
       treesitter = {
@@ -179,14 +178,14 @@
       undotree.enable = true;
 
       which-key = {
-	enable = true;
-	registrations = {
-	  "<leader>ch" = "Code hover";
-	  "<leader>cD" = "Code references";
-	  "<leader>cd" = "Code definitions";
-	  "<leader>ci" = "Implementations";
-			"<leader>ct" = "Type definition";
-	};
+        enable = true;
+        registrations = {
+          "<leader>ch" = "Code hover";
+          "<leader>cD" = "Code references";
+          "<leader>cd" = "Code definitions";
+          "<leader>ci" = "Implementations";
+          "<leader>ct" = "Type definition";
+        };
       };
 
       trouble.enable = true;
@@ -200,8 +199,9 @@
       };
 
       copilot-cmp = {
-      enable = true;
-      fixPairs = true;};
+        enable = true;
+        fixPairs = true;
+      };
     };
   };
 }
