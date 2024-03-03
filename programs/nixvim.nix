@@ -48,6 +48,19 @@
 	key = "<leader>gc";
 	options.desc = "Git Commit";
       }
+      {
+	mode = "n";
+	action = "<cmd>UndotreeToggle<CR>";
+	key = "<leader>ut";
+	options.desc = "Toggle Undotree";
+      }
+      {
+	mode = "n";
+	action = "<cmd>UndotreeToggle<CR>";
+	key = "<leader>uf";
+	options.desc = "Focus Undotree";
+      }
+
     ];
 
     options = {
@@ -84,10 +97,10 @@
 	addFile = "<leader>a";
 	toggleQuickMenu = "<leader>ha";
 	navFile = {
-            "1" = "<C-j>";
-            "2" = "<C-k>";
-            "3" = "<C-l>";
-            "4" = "<C-m>";
+            "1" = "<C-1>";
+            "2" = "<C-2>";
+            "3" = "<C-3>";
+            "4" = "<C-4>";
 	};
 	};
       };
@@ -156,8 +169,6 @@
         };
       };
 
-      nvim-autopairs.enable = true;
-
       rustaceanvim.enable = true;
 
       fugitive.enable = true;
@@ -190,7 +201,7 @@
 
       copilot-cmp = {
       enable = true;
-      fixPairs = false;};
+      fixPairs = true;};
     };
   };
 }
