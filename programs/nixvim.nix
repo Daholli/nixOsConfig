@@ -23,6 +23,17 @@
         action = "<cmd>Ex<CR>";
         key = "<leader>e";
       }
+      {
+        mode = "n";
+        action = "<cmd>w<CR>";
+        key = "<C-s>";
+      }
+      {
+        mode = "n";
+        action = "<cmd>noh<CR>";
+        key = "<esc>";
+        options.silent = true;
+      }
     ];
 
     options = {
@@ -51,6 +62,11 @@
             desc = "[s]earch [g]rep";
           };
         };
+      };
+
+      harppon = {
+        enable = true;
+        keymaps.addFile = "<leader>a";
       };
 
       treesitter = {
