@@ -143,15 +143,19 @@
         sources = [
           {
             name = "copilot";
-            groupIndex = 1;
           }
           {
             name = "nvim_lsp";
-            groupIndex = 1;
           }
-          {name = "luasnip";}
-          {name = "path";}
-          {name = "buffer";}
+          {
+            name = "luasnip";
+          }
+          {
+            name = "path";
+          }
+          {
+            name = "buffer";
+          }
         ];
         mapping = {
           "<C-Space>" = "cmp.mapping.complete()";
@@ -172,7 +176,10 @@
 
       fugitive.enable = true;
 
-      rainbow-delimiters.enable = true;
+      rainbow-delimiters = {
+	enable = true;
+
+      };
       nvim-colorizer.enable = true;
 
       undotree.enable = true;
