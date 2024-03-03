@@ -17,7 +17,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs = {
@@ -35,8 +34,8 @@
         ./hosts/default/configuration.nix
         inputs.home-manager.nixosModules.default
         {
-	environment.systemPackages = [alejandra.defaultPackage.${system}];
-	}
+          environment.systemPackages = [alejandra.defaultPackage.${system}];
+        }
       ];
     };
   };

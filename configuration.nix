@@ -14,14 +14,14 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  
+
   # Enable networking
   networking.networkmanager.enable = true;
-  
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-# Enable sound with pipewire.
+  # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -31,18 +31,19 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  
+
   programs.zsh = {
     enable = true;
     promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
   };
-  
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     #essentials
     git
+    gitAndTools.gh
     neovim
     kitty
     zsh
@@ -59,7 +60,7 @@
 
     # make sure our nix files always look good
     alejandra
-    
+
     # mostly for pactl
     pulseaudio
   ];

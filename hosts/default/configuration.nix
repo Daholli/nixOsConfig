@@ -14,10 +14,11 @@
     ./hardware-configuration.nix
     ./../../configuration.nix
     inputs.nixvim.nixosModules.nixvim
+    ./../../programs/default.nix
   ];
 
   # Define your hostname.
-  networking.hostName = "CHDesktop";
+  networking.hostName = "yggdrasil";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   hardware.bluetooth = {
@@ -98,7 +99,7 @@
       discord
       firefox
       steam
-      libsForQt5.bismuth
+      noisetorch
     ];
   };
 
@@ -113,7 +114,6 @@
     };
   };
 
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -121,16 +121,34 @@
     rust-analyzer
   ];
 
+  # Enable the unfree 1Password packages
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "1password-gui"
+      "1password"
+    ];
+
   fonts = {
     packages = with pkgs; [
       (nerdfonts.override {fonts = ["CodeNewRoman"];})
     ];
   };
 
+  ## Program configurations
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
+  programs.noisetorch.enable = true;
+
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    # Certain features, including CLI integration and system authentication support,
+    # require enabling PolKit integration on some desktop environments (e.g. Plasma).
+    polkitPolicyOwners = ["cholli"];
   };
 
   environment.variables.EDITOR = "nvim";
