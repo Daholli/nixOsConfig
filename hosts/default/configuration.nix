@@ -63,7 +63,7 @@
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = false;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
   environment.pathsToLink = ["/libexec"];
@@ -129,6 +129,7 @@
     (pkgs.waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
+    eww
     dunst
     libnotify
     swww
