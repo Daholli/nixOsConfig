@@ -57,19 +57,12 @@
     driSupport32Bit = true;
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
-
   hardware.nvidia = {
     modesetting.enable = true;
-
     powerManagement.enable = false;
-
     powerManagement.finegrained = false;
-
     open = false;
-
-    nvidiaSettings = true;
-
+    nvidiaSettings = false;
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
@@ -78,17 +71,31 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
+    videoDrivers = ["nvidia"];
 
-    # Enable the KDE Plasma Desktop Environment.
-    displayManager.sddm.enable = true;
-    desktopManager.plasma5.enable = true;
+  #   # Enable the KDE Plasma Desktop Environment.
+     displayManager.sddm.enable = true;
+     desktopManager.plasma5.enable = true;
 
-    # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
+  #   # Configure keymap in X11
+     xkb = {
+       layout = "us";
+	variant = "";
     };
   };
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+  };
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.cholli = {
@@ -118,7 +125,15 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     rustup
-    rust-analyzer
+    waybar
+    (pkgs.waybar.overrideAttrs (oldAttrs: {
+      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+    }))
+    dunst
+    libnotify
+    swww
+    rofi-wayland
+    fish
   ];
 
   # Enable the unfree 1Password packages

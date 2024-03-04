@@ -177,8 +177,7 @@
       fugitive.enable = true;
 
       rainbow-delimiters = {
-	enable = true;
-
+        enable = true;
       };
       nvim-colorizer.enable = true;
 
