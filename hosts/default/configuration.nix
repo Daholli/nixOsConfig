@@ -107,6 +107,7 @@
       firefox
       steam
       noisetorch
+      minecraft
     ];
   };
 
@@ -130,11 +131,13 @@
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
     eww
+    hyprpaper
+    hyprlock
     dunst
     libnotify
-    swww
     rofi-wayland
     fish
+    lxqt.lxqt-policykit
   ];
 
   # Enable the unfree 1Password packages
@@ -146,7 +149,10 @@
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override {fonts = ["CodeNewRoman"];})
+      (nerdfonts.override {fonts = ["CodeNewRoman" "NerdFontsSymbolsOnly"];})
+      font-awesome
+      powerline-fonts
+      powerline-symbols
     ];
   };
 
