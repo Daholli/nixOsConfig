@@ -104,10 +104,10 @@
     extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       discord
-      firefox
+      vivaldi
       steam
       noisetorch
-      minecraft
+      prismlauncher
     ];
   };
 
