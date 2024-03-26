@@ -105,6 +105,7 @@
     packages = with pkgs; [
       discord
       vivaldi
+      vivaldi-ffmpeg-codecs
       steam
       noisetorch
       prismlauncher
