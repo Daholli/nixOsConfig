@@ -73,14 +73,14 @@
     enable = true;
     videoDrivers = ["nvidia"];
 
-  #   # Enable the KDE Plasma Desktop Environment.
-     displayManager.sddm.enable = true;
-     desktopManager.plasma5.enable = true;
+    #   # Enable the KDE Plasma Desktop Environment.
+    displayManager.sddm.enable = true;
+    desktopManager.plasma5.enable = true;
 
-  #   # Configure keymap in X11
-     xkb = {
-       layout = "us";
-	variant = "";
+    #   # Configure keymap in X11
+    xkb = {
+      layout = "us";
+      variant = "";
     };
   };
 
@@ -162,22 +162,22 @@
   };
 
   programs.starship = {
-  		enable = true;
-		settings = {
-          character = {
-            success_symbol = "[➜](bold green)";
-            error_symbol = "[✗](bold red) ";
-            vicmd_symbol = "[](bold blue) ";
-          };
-        };
-  	};
+    enable = true;
+    settings = {
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[✗](bold red) ";
+        vicmd_symbol = "[](bold blue) ";
+      };
+    };
+  };
 
   programs.fish = {
-  		enable = true;
-  		interactiveShellInit = ''
-  			starship init fish | source
-  		'';
-  	};
+    enable = true;
+    shellInit = ''
+      starship init fish | source
+    '';
+  };
 
   programs.noisetorch.enable = true;
 

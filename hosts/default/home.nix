@@ -47,10 +47,44 @@
     };
     shellIntegration.enableFishIntegration = true;
     settings = {
-    			"background_opacity" = "0.9";
-			"shell" = "fish";
+      "background_opacity" = "0.9";
+      "shell" = "fish";
+    };
+  };
 
-    		};
+  programs.starship = {
+    enable = true;
+    enableTransience = true;
+    settings = {
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[✗](bold red) ";
+        vicmd_symbol = "[](bold blue) ";
+      };
+      time = {
+        disabled = false;
+        time_format = "%T";
+        utc_time_offset = "+1";
+      };
+      username = {
+        style_user = "white";
+        style_root = "white";
+        format = "[$user]($style) ";
+        disabled = false;
+        show_always = true;
+      };
+      hostname = {
+        ssh_only = false;
+        format = "@ [$hostname](bold yellow) ";
+        disabled = false;
+      };
+      directory = {
+        home_symbol = "󰋞 ~";
+        read_only_style = "197";
+        read_only = "  ";
+        format = "at [$path]($style)[$read_only]($read_only_style) ";
+      };
+    };
   };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
