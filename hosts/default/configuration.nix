@@ -114,7 +114,7 @@
 
   # Set shell as well
   users.users.cholli.shell = pkgs.zsh;
-  environment.shells = with pkgs; [zsh];
+  environment.shells = with pkgs; [zsh fish];
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
@@ -127,10 +127,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     rustup
-    waybar
-    (pkgs.waybar.overrideAttrs (oldAttrs: {
-      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-    }))
     eww
     hyprpaper
     hyprlock
@@ -138,6 +134,7 @@
     libnotify
     rofi-wayland
     fish
+    starship
     lxqt.lxqt-policykit
   ];
 
@@ -164,6 +161,24 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
+  programs.starship = {
+  		enable = true;
+		settings = {
+          character = {
+            success_symbol = "[➜](bold green)";
+            error_symbol = "[✗](bold red) ";
+            vicmd_symbol = "[](bold blue) ";
+          };
+        };
+  	};
+
+  programs.fish = {
+  		enable = true;
+  		interactiveShellInit = ''
+  			starship init fish | source
+  		'';
+  	};
+
   programs.noisetorch.enable = true;
 
   programs._1password.enable = true;
@@ -177,5 +192,5 @@
   environment.variables.EDITOR = "nvim";
   environment.variables.SUDOEDITOR = "nvim";
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "23.11";
 }
